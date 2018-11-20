@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         alarmTimePicker = (TimePicker) findViewById(R.id.timePicker);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, Accelerometer.class);
+        //Start Service
+        startService(intent);
     }
     public void OnToggleClicked(View view)
     {
