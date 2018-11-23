@@ -17,12 +17,20 @@ public class Accelerometer extends Service implements SensorEventListener {
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
 
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
         return START_STICKY;
+    }
+
+    @Override
+    public void onCreate() {
+        senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        //add this line only
     }
 
     @Nullable
@@ -34,7 +42,7 @@ public class Accelerometer extends Service implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor mySensor = sensorEvent.sensor;
-
+        Log.w("Accelerometer","sensor changed!");
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
