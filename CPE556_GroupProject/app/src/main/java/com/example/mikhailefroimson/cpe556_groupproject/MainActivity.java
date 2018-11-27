@@ -14,7 +14,7 @@ import android.widget.ToggleButton;
 
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements AccelerometerListener
 {
     TimePicker alarmTimePicker;
     PendingIntent pendingIntent;
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, Accelerometer.class);
         //Start Service
         startService(intent);
+        Accelerometer.addListener(this);
     }
     public void OnToggleClicked(View view)
     {
@@ -58,5 +59,11 @@ public class MainActivity extends AppCompatActivity
             alarmManager.cancel(pendingIntent);
             Toast.makeText(MainActivity.this, "ALARM OFF", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void listenForShake() {
+        Toast.makeText(MainActivity.this, "SHAKE DETECTED. TURNING ALARM OFF.", Toast.LENGTH_SHORT).show();
+        alarmManager.cancel(pendingIntent);
     }
 }

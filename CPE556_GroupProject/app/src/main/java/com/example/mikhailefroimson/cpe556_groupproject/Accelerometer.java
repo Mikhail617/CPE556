@@ -13,11 +13,19 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.List;
+
+interface AccelerometerListener {
+    void listenForShake();
+}
+
 public class Accelerometer extends Service implements SensorEventListener {
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
 
-
+    private static List<AccelerometerListener> listeners = new ArrayList<>();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -47,12 +55,30 @@ public class Accelerometer extends Service implements SensorEventListener {
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
             float z = sensorEvent.values[2];
-            Log.w("Accelerometer", "x = " + x + ", y = " + y + ", z = " + z + ".");
+            //Log.w("Accelerometer", "x = " + x + ", y = " + y + ", z = " + z + ".");
+            if(x > 15 || y > 15 || z > 15) {
+                Log.w("Accelerometer", "SHAKE SHAKE SHAKE!\n");
+                Log.w("Accelerometer", "SHAKE SHAKE SHAKE!\n");
+                Log.w("Accelerometer", "SHAKE YOUR BOOTY!\n");
+                this.notifyShakeDetectedListeners();
+            }
         }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    public static void addListener( AccelerometerListener listener ) {
+        listeners.add(listener);
+    }
+
+    protected static void notifyShakeDetectedListeners () {
+        // Notify each of the listeners in the list of registered listeners
+        for(int i = 0; i < listeners.size(); i++) {
+            AccelerometerListener listener = listeners.get(i);
+            listener.listenForShake();
+        }
     }
 }

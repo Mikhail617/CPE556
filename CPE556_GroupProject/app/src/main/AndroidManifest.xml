@@ -3,6 +3,7 @@
     package="com.example.mikhailefroimson.cpe556_groupproject">
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -18,7 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".Accelerometer"></service>
+        <receiver android:name=".AlarmReceiver">
+        </receiver>
+        <service android:name=".Accelerometer">
+        </service>
     </application>
 
 </manifest>
