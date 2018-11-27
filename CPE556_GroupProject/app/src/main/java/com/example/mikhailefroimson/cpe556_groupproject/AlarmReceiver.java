@@ -8,18 +8,29 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.widget.Toast;
 
-public class AlarmReceiver extends BroadcastReceiver
+public class AlarmReceiver extends BroadcastReceiver implements AccelerometerListener
 {
+    Context context;
+    Uri alarmUri;
+    Ringtone ringtone;
+
     @Override
     public void onReceive(Context context, Intent intent)
     {
+        this.context = context;
         Toast.makeText(context, "Alarm! Wake up! Wake up!", Toast.LENGTH_LONG).show();
-        Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alarmUri == null)
         {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         }
-        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
+        ringtone = RingtoneManager.getRingtone(context, alarmUri);
         ringtone.play();
+        Accelerometer.addListener(this);
+    }
+
+    @Override
+    public void listenForShake() {
+        ringtone.stop();
     }
 }
