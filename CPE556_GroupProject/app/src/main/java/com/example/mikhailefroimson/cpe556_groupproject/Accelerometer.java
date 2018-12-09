@@ -50,7 +50,6 @@ public class Accelerometer extends Service implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor mySensor = sensorEvent.sensor;
-        Log.w("Accelerometer","sensor changed!");
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
@@ -58,8 +57,6 @@ public class Accelerometer extends Service implements SensorEventListener {
             //Log.w("Accelerometer", "x = " + x + ", y = " + y + ", z = " + z + ".");
             if(x > 15 || y > 15 || z > 15) {
                 Log.w("Accelerometer", "SHAKE SHAKE SHAKE!\n");
-                Log.w("Accelerometer", "SHAKE SHAKE SHAKE!\n");
-                Log.w("Accelerometer", "SHAKE YOUR BOOTY!\n");
                 this.notifyShakeDetectedListeners();
             }
         }

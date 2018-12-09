@@ -2,8 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mikhailefroimson.cpe556_groupproject">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -19,10 +23,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".AlarmReceiver">
-        </receiver>
-        <service android:name=".Accelerometer">
-        </service>
+
+        <receiver android:name=".AlarmReceiver" />
+
+        <service android:name=".Accelerometer" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".ListeningActivity"
+            android:label="@string/title_activity_listening"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

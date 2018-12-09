@@ -8,29 +8,46 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements AccelerometerListener
+public class MainActivity extends AppCompatActivity implements AccelerometerListener, AdapterView.OnItemSelectedListener
 {
     TimePicker alarmTimePicker;
     PendingIntent pendingIntent;
     AlarmManager alarmManager;
+
+    private Spinner spinner;
+    private static final String[] paths = {"Settings", "About", "Exit"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Create the alarm and start the accelerometer service
         alarmTimePicker = (TimePicker) findViewById(R.id.timePicker);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(this, Accelerometer.class);
         //Start Service
         startService(intent);
         Accelerometer.addListener(this);
+
+        // Settings click listener
+        spinner = (Spinner)findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
+                android.R.layout.simple_spinner_item,paths);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
     }
     public void OnToggleClicked(View view)
     {
@@ -65,5 +82,26 @@ public class MainActivity extends AppCompatActivity implements AccelerometerList
     public void listenForShake() {
         Toast.makeText(MainActivity.this, "SHAKE DETECTED. TURNING ALARM OFF.", Toast.LENGTH_SHORT).show();
         alarmManager.cancel(pendingIntent);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+        switch (position) {
+            case 0:
+                // Whatever you want to happen when the first item gets selected
+                break;
+            case 1:
+                // Whatever you want to happen when the second item gets selected
+                break;
+            case 2:
+                // Whatever you want to happen when the thrid item gets selected
+                break;
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
