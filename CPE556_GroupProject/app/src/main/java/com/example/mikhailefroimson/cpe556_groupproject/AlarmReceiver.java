@@ -7,6 +7,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.StrictMode;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,6 +24,8 @@ public class AlarmReceiver extends BroadcastReceiver implements AccelerometerLis
 {
     private static final String WAKEWORD_SEARCH = "WAKEWORD_SEARCH";
 
+    //private Vibrator mVibrator;
+
     Context context;
     Uri alarmUri;
     Ringtone ringtone;
@@ -32,6 +35,7 @@ public class AlarmReceiver extends BroadcastReceiver implements AccelerometerLis
     public void onReceive(Context context, Intent intent)
     {
         this.context = context;
+        //mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         Toast.makeText(context, "Alarm! Wake up! Wake up!", Toast.LENGTH_LONG).show();
         alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alarmUri == null)
@@ -41,9 +45,6 @@ public class AlarmReceiver extends BroadcastReceiver implements AccelerometerLis
         ringtone = RingtoneManager.getRingtone(context, alarmUri);
         ringtone.play();
         Accelerometer.addListener(this);
-        intent = new Intent(context, ListeningActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-        //context.startActivity(intent);
         setup_voide_recognition();
 
         StrictMode.allowThreadDiskReads();
@@ -61,14 +62,19 @@ public class AlarmReceiver extends BroadcastReceiver implements AccelerometerLis
 
     @Override
     public void onEndOfSpeech() {
-        Log.d("AlarmReceiver: ", "onEndOfSpeech: calling ringtone.stop()");
-        ringtone.stop();
-        Log.d("AlarmReceiver: ", "onEndOfSpeech: ringtone should have STOPPED.");
+        Log.d("AlarmReceiver: ", "onEndOfSpeech: ");
     }
 
     @Override
     public void onPartialResult(Hypothesis hypothesis) {
         Log.d("AlarmReceiver: ", "onPartialResult: ");
+        if (hypothesis != null) {
+            final String text = hypothesis.getHypstr();
+            if (text.equals(context.getString(R.string.wake_word))) {
+                //mVibrator.vibrate(100);
+                ringtone.stop();
+            }
+        }
     }
 
     @Override
@@ -83,7 +89,7 @@ public class AlarmReceiver extends BroadcastReceiver implements AccelerometerLis
 
     @Override
     public void onTimeout() {
-        Log.d("AlarmReceiver: ", "onTimeout: !!!@@@###$$$%%%^^^&&&***((()))___+++ ");
+        Log.d("AlarmReceiver: ", "onTimeout: ");
     }
 
     private void setup_voide_recognition() {

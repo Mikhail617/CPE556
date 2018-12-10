@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -22,9 +20,6 @@ public class MainActivity extends AppCompatActivity implements AccelerometerList
     TimePicker alarmTimePicker;
     PendingIntent pendingIntent;
     AlarmManager alarmManager;
-
-    private Spinner spinner;
-    private static final String[] paths = {"Settings", "About", "Exit"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,16 +34,15 @@ public class MainActivity extends AppCompatActivity implements AccelerometerList
         //Start Service
         startService(intent);
         Accelerometer.addListener(this);
-
-        // Settings click listener
-        spinner = (Spinner)findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_spinner_item,paths);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
     public void OnToggleClicked(View view)
     {
         long time;
@@ -85,18 +79,19 @@ public class MainActivity extends AppCompatActivity implements AccelerometerList
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-        switch (position) {
-            case 0:
-                // Whatever you want to happen when the first item gets selected
-                break;
-            case 1:
-                // Whatever you want to happen when the second item gets selected
-                break;
-            case 2:
-                // Whatever you want to happen when the thrid item gets selected
-                break;
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent i = new Intent(this,SettingsActivity.class);
+                this.startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
