@@ -103,7 +103,7 @@ public class AlarmReceiver extends BroadcastReceiver implements AccelerometerLis
             mRecognizer = SpeechRecognizerSetup.defaultSetup()
                     .setAcousticModel(new File(assetDir, "models/en-us-ptm"))
                     .setDictionary(new File(assetDir, "models/lm/words.dic"))
-                    .setKeywordThreshold(Float.valueOf("1.e-" + 40))
+                    .setKeywordThreshold(Float.valueOf("1.e-" + 20))
                     .getRecognizer();
             mRecognizer.addKeyphraseSearch(WAKEWORD_SEARCH, context.getString(R.string.wake_word));
             mRecognizer.addListener(this);
