@@ -71,7 +71,7 @@ public class AlarmReceiver extends BroadcastReceiver implements AccelerometerLis
         if (hypothesis != null) {
             final String text = hypothesis.getHypstr();
             Log.d("AlarmReceiver: ", "onPartialResult: text = " + text);
-            if (text.equals(context.getString(R.string.wake_word))) {
+            if (text.contains(context.getString(R.string.wake_word))) {
                 mVibrator.vibrate(100);
                 ringtone.stop();
                 mRecognizer.removeListener(this);
