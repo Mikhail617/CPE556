@@ -80,5 +80,6 @@
     <string name="seek_bar_title">Sense.:</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
+    <string name="name">Wake&amp;Shake</string>
 
 </resources>

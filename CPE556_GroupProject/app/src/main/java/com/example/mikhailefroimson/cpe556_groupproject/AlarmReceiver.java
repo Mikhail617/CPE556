@@ -24,7 +24,7 @@ public class AlarmReceiver extends BroadcastReceiver implements AccelerometerLis
 {
     private static final String WAKEWORD_SEARCH = "WAKEWORD_SEARCH";
 
-    //private Vibrator mVibrator;
+    private Vibrator mVibrator;
 
     Context context;
     Uri alarmUri;
@@ -35,7 +35,7 @@ public class AlarmReceiver extends BroadcastReceiver implements AccelerometerLis
     public void onReceive(Context context, Intent intent)
     {
         this.context = context;
-        //mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         Toast.makeText(context, "Alarm! Wake up! Wake up!", Toast.LENGTH_LONG).show();
         alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alarmUri == null)
@@ -70,9 +70,13 @@ public class AlarmReceiver extends BroadcastReceiver implements AccelerometerLis
         Log.d("AlarmReceiver: ", "onPartialResult: ");
         if (hypothesis != null) {
             final String text = hypothesis.getHypstr();
+            Log.d("AlarmReceiver: ", "onPartialResult: text = " + text);
             if (text.equals(context.getString(R.string.wake_word))) {
-                //mVibrator.vibrate(100);
+                mVibrator.vibrate(100);
                 ringtone.stop();
+                mRecognizer.removeListener(this);
+                mRecognizer.cancel();
+                mRecognizer.shutdown();
             }
         }
     }
@@ -99,7 +103,7 @@ public class AlarmReceiver extends BroadcastReceiver implements AccelerometerLis
             mRecognizer = SpeechRecognizerSetup.defaultSetup()
                     .setAcousticModel(new File(assetDir, "models/en-us-ptm"))
                     .setDictionary(new File(assetDir, "models/lm/words.dic"))
-                    .setKeywordThreshold(Float.valueOf("3"))
+                    .setKeywordThreshold(Float.valueOf("1.e-" + 40))
                     .getRecognizer();
             mRecognizer.addKeyphraseSearch(WAKEWORD_SEARCH, context.getString(R.string.wake_word));
             mRecognizer.addListener(this);

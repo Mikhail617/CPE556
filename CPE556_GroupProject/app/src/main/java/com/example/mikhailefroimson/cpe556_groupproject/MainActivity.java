@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements AccelerometerList
         return true;
     }
 
+
     public void OnToggleClicked(View view)
     {
         long time;
